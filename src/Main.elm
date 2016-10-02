@@ -116,25 +116,49 @@ view model =
 
         elapsedTime =
             (formatTimeComponent minutes) ++ ":" ++ (formatTimeComponent seconds)
+
+        mainCssClass =
+            if model.atZero then
+                "timer-ended"
+            else
+                ""
+
+        buttonCssClass =
+            if model.atZero then
+                "bg-white black"
+            else
+                "bg-black white"
     in
-        div []
-            [ h1 [] [ text elapsedTime ]
-            , button
-                [ onClick <| IncreaseSeconds 30 ]
-                [ text "+30 sec" ]
-            , button
-                [ onClick <| IncreaseSeconds -30 ]
-                [ text "-30 sec" ]
-            , button
-                [ onClick <| ResetTimer ]
-                [ text "Reset" ]
-            , button
-                [ onClick <| ToggleTimer ]
-                [ text <|
-                    if model.countdownRunning then
-                        "Stop"
-                    else
-                        "Start"
+        div [ class <| " " ++ mainCssClass ]
+            [ div []
+                [ h1 [ class "center" ] [ text elapsedTime ]
+                ]
+            , div [ class "" ]
+                [ button
+                    [ class <| "btn h6 " ++ buttonCssClass
+                    , onClick <| IncreaseSeconds -30
+                    ]
+                    [ text "-30 sec" ]
+                , button
+                    [ class <| "btn h6 " ++ buttonCssClass
+                    , onClick <| IncreaseSeconds 30
+                    ]
+                    [ text "+30 sec" ]
+                , button
+                    [ class <| "btn h6 " ++ buttonCssClass
+                    , onClick <| ResetTimer
+                    ]
+                    [ text "Reset" ]
+                , button
+                    [ class <| "btn h6 " ++ buttonCssClass
+                    , onClick <| ToggleTimer
+                    ]
+                    [ text <|
+                        if model.countdownRunning && not model.atZero then
+                            "Stop"
+                        else
+                            "Start"
+                    ]
                 ]
             ]
 

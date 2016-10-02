@@ -1,0 +1,30 @@
+---
+stages:
+  - build
+  - publish
+  - deploy
+
+before_script:
+  - docker info
+
+build_image:
+  stage: build
+  script:
+    - docker build -t timer ./
+    - docker tag -f timer registry.stangier.io/planningpoker/timer:latest
+
+publish_to_registry:
+  stage: publish
+  script:
+    - docker push registry.stangier.io/planningpoker/timer:latest
+  only:
+    - master
+
+run_on_docker:
+  stage: deploy
+  script:
+    - docker stop timer || true
+    - docker rm timer || true
+    - docker run -d --name=timer -e VIRTUAL_HOST='timer.planningpoker.cc' registry.stangier.io/planningpoker/timer:latest run
+  only:
+    - master

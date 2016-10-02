@@ -1,0 +1,19 @@
+{
+  "name": "timer",
+  "version": "1.0.0",
+  "description": "Simple timer application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@gitlab.stangier.io:10022/planning-poker/timer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ace-css": "^1.1.0"
+  }
+}

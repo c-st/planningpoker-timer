@@ -1,3 +1,4 @@
+require('ace-css/css/ace.css');
 require('./main.css');
 
 var Elm = require('./Main.elm');

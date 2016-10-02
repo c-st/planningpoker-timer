@@ -46,13 +46,16 @@ update msg model =
             let
                 newSeconds =
                     model.secondsToCountDown + seconds
+
+                secondsToCountDown =
+                    if newSeconds > 0 then
+                        newSeconds
+                    else
+                        0
             in
                 ( { model
-                    | secondsToCountDown =
-                        if newSeconds > 0 then
-                            newSeconds
-                        else
-                            0
+                    | secondsToCountDown = secondsToCountDown
+                    , atZero = False
                   }
                 , Cmd.none
                 )
@@ -74,8 +77,17 @@ update msg model =
 
                 atZero =
                     newSeconds == 0
+
+                countdownRunning =
+                    not atZero
             in
-                ( { model | secondsToCountDown = newSeconds, atZero = atZero }, Cmd.none )
+                ( { model
+                    | secondsToCountDown = newSeconds
+                    , atZero = atZero
+                    , countdownRunning = countdownRunning
+                  }
+                , Cmd.none
+                )
 
         ResetTimer ->
             ( initialModel, Cmd.none )

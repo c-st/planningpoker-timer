@@ -5,6 +5,11 @@ html, body {
   padding: 0;
 }
 
+@keyframes fadeToBlack {
+    from {background-color: white;}
+    to {background-color: black;}
+}
+
 h1 {
   font-size: 1.5em;
   margin: 0;
@@ -20,4 +25,6 @@ h1 {
 .timer-ended {
   color: white;
   background-color: black;
+  animation-name: fadeToBlack;
+  animation-duration: 1s;
 }

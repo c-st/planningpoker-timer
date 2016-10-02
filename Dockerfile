@@ -16,10 +16,11 @@ RUN \
 
 # build frontend
 
-COPY package.json /usr/src/app/frontend
+WORKDIR /usr/src/app
+COPY package.json /usr/src/app
 RUN npm --quiet install
 
-COPY . /usr/src/app/frontend
+COPY . /usr/src/app
 RUN elm-app build
 
 # copy artifacts to nginx

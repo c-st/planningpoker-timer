@@ -1,4 +1,4 @@
-FROM smebberson/alpine-nginx-nodejs
+FROM smebberson/alpine-nginx-nodejs:4.1.0
 
 EXPOSE 80
 
@@ -6,13 +6,11 @@ EXPOSE 80
 
 WORKDIR /usr/src/app
 
-RUN npm install --global create-elm-app
-
 COPY package.json /usr/src/app
 RUN npm --quiet install
 
 COPY . /usr/src/app
-RUN elm-app build
+RUN node ./scripts/build.js
 
 # copy artifacts to nginx
 

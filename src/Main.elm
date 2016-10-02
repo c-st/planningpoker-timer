@@ -5,6 +5,7 @@ import Time exposing (Time, second, inSeconds, inMinutes)
 import Platform.Sub exposing (none)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (..)
 
 
 -- model
@@ -26,7 +27,7 @@ type Msg
 
 initialModel : Model
 initialModel =
-    Model 180 False False
+    Model 0 False False
 
 
 init : ( Model, Cmd Msg )
@@ -71,7 +72,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    if model.countdownRunning then
+    if not model.atZero && model.countdownRunning then
         Time.every second TimerTick
     else
         Platform.Sub.none
@@ -89,7 +90,7 @@ formatTimeComponent number =
         toString number
 
 
-view : Model -> Html msg
+view : Model -> Html Msg
 view model =
     let
         minutes =
@@ -102,7 +103,21 @@ view model =
             (formatTimeComponent minutes) ++ ":" ++ (formatTimeComponent seconds)
     in
         div []
-            [ text ("Time remaining: " ++ elapsedTime)
+            [ h1 [] [ text elapsedTime ]
+            , button
+                [ onClick <| IncreaseSeconds 30 ]
+                [ text "+30 sec" ]
+            , button
+                [ onClick <| ResetTimer ]
+                [ text "Reset" ]
+            , button
+                [ onClick <| ToggleTimer ]
+                [ text <|
+                    if model.countdownRunning then
+                        "Stop"
+                    else
+                        "Start"
+                ]
             ]
 
 

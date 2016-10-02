@@ -1,23 +1,13 @@
-FROM nginx:stable
+FROM smebberson/alpine-nginx-nodejs
 
 EXPOSE 80
-
-# setup node
-
-RUN apt-get update && apt-get install -y \
-	curl \
-	python \
-	make \
-	g++
-
-RUN \
- curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
- apt-get install -y nodejs
 
 # build frontend
 
 WORKDIR /usr/src/app
+
 RUN npm install --global create-elm-app
+
 COPY package.json /usr/src/app
 RUN npm --quiet install
 

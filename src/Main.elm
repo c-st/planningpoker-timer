@@ -1,6 +1,8 @@
 module Main exposing (..)
 
+import Html.App as App
 import Time exposing (Time, second)
+import Platform.Sub exposing (none)
 import Html exposing (text, Html)
 
 
@@ -62,4 +64,36 @@ update msg model =
             ( initialModel, Cmd.none )
 
 
+
+-- subscription
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    if model.countdownRunning then
+        Time.every second TimerTick
+    else
+        Platform.Sub.none
+
+
+
+-- view
+
+
+view : Model -> Html msg
+view model =
     text "Hello World!"
+
+
+
+-- main
+
+
+main : Program Never
+main =
+    App.program
+        { init = init
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }

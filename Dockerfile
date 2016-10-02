@@ -16,7 +16,7 @@ RUN \
 
 # build frontend
 
-COPY frontend/package.json /usr/src/app/frontend
+COPY package.json /usr/src/app/frontend
 RUN npm --quiet install
 
 COPY . /usr/src/app/frontend

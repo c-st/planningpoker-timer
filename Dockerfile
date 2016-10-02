@@ -17,6 +17,7 @@ RUN \
 # build frontend
 
 WORKDIR /usr/src/app
+RUN npm install --global create-elm-app
 COPY package.json /usr/src/app
 RUN npm --quiet install
 

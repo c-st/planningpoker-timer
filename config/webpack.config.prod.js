@@ -1,5 +1,5 @@
+var path = require("path");
 const webpack = require('webpack');
-const paths = require('../config/paths');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -8,42 +8,25 @@ const root = process.cwd();
 module.exports = {
   bail: true,
   entry: [
-    paths.entry
+      path.resolve('./src/index.js')
   ],
   output: {
-
-    // The build folder.
-    path: paths.dist,
-
-    // Generated JS files.
-    filename: 'js/[name].[chunkhash:8].js'
-  },
-  resolveLoader: {
-
-    // Look for loaders in own ./node_modules
-    root: paths.ownModules,
-    moduleTemplates: [ '*-loader' ]
-  },
-  resolve: {
-    modulesDirectories: [ 'node_modules' ],
-    extensions: [ '', '.js', '.elm' ]
+    path: path.resolve(__dirname + '/dist'),
+    filename: '[name].js',
   },
   module: {
-    noParse: /\.elm$/,
     loaders: [
       {
-        test: /\.elm$/,
-        exclude: [ /elm-stuff/, /node_modules/ ],
-
-        // Use the local installation of elm-make
-        loader: 'elm-webpack',
-        query: {
-          pathToMake: paths.elmMake
-        }
+        test: /\.(css|scss)$/,
+        loaders: [
+          'style-loader',
+          'css-loader',
+        ]
       },
       {
-        test: /\.css$/,
-        loader: 'style!css'
+        test:    /\.elm$/,
+        exclude: [/elm-stuff/, /node_modules/],
+        loader:  'elm-webpack?pathToMake=node_modules/.bin/elm-make',
       },
       {
         test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
@@ -53,18 +36,16 @@ module.exports = {
           name: 'static/media/[name].[hash:8].[ext]'
         }
       }
-    ]
+    ],
+    noParse: /\.elm$/,
   },
   plugins: [
-
-    // Remove the content of the ./dist/ folder.
     new CleanWebpackPlugin([ 'dist' ], {
       root: root,
       verbose: true,
       dry: false
     }),
 
-    // Minify the compiled JavaScript.
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
@@ -73,11 +54,10 @@ module.exports = {
         comments: false
       }
     }),
-
     new HtmlWebpackPlugin({
       inject: true,
-      template: paths.template,
-      favicon: paths.favicon,
+      template: path.resolve('./src/index.html'),
+      favicon: path.resolve('./src/favicon.ico'),
       minify: {
         removeComments: true,
         collapseWhitespace: true,

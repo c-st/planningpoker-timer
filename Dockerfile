@@ -1,4 +1,4 @@
-FROM smebberson/alpine-nginx-nodejs:4.1.0
+FROM smebberson/alpine-nginx-nodejs:latest
 
 EXPOSE 80
 

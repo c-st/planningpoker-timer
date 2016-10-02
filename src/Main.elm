@@ -1,9 +1,10 @@
 module Main exposing (..)
 
 import Html.App as App
-import Time exposing (Time, second)
+import Time exposing (Time, second, inSeconds, inMinutes)
 import Platform.Sub exposing (none)
-import Html exposing (text, Html)
+import Html exposing (..)
+import Html.Attributes exposing (..)
 
 
 -- model
@@ -80,9 +81,29 @@ subscriptions model =
 -- view
 
 
+formatTimeComponent : Int -> String
+formatTimeComponent number =
+    if number < 10 then
+        "0" ++ toString number
+    else
+        toString number
+
+
 view : Model -> Html msg
 view model =
-    text "Hello World!"
+    let
+        minutes =
+            model.secondsToCountDown // 60
+
+        seconds =
+            model.secondsToCountDown % 60
+
+        elapsedTime =
+            (formatTimeComponent minutes) ++ ":" ++ (formatTimeComponent seconds)
+    in
+        div []
+            [ text ("Time remaining: " ++ elapsedTime)
+            ]
 
 
 

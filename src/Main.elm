@@ -44,13 +44,28 @@ update msg model =
     case msg of
         IncreaseSeconds seconds ->
             let
-                newSecondsToCountDown =
+                newSeconds =
                     model.secondsToCountDown + seconds
             in
-                ( { model | secondsToCountDown = newSecondsToCountDown }, Cmd.none )
+                ( { model
+                    | secondsToCountDown =
+                        if newSeconds > 0 then
+                            newSeconds
+                        else
+                            0
+                  }
+                , Cmd.none
+                )
 
         ToggleTimer ->
-            ( { model | countdownRunning = not model.countdownRunning }, Cmd.none )
+            let
+                countdownRunning =
+                    if model.secondsToCountDown > 0 then
+                        not model.countdownRunning
+                    else
+                        model.countdownRunning
+            in
+                ( { model | countdownRunning = countdownRunning }, Cmd.none )
 
         TimerTick now ->
             let
@@ -107,6 +122,9 @@ view model =
             , button
                 [ onClick <| IncreaseSeconds 30 ]
                 [ text "+30 sec" ]
+            , button
+                [ onClick <| IncreaseSeconds -30 ]
+                [ text "-30 sec" ]
             , button
                 [ onClick <| ResetTimer ]
                 [ text "Reset" ]

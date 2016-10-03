@@ -117,6 +117,15 @@ formatTimeComponent number =
         toString number
 
 
+timerButton : String -> String -> Msg -> Html Msg
+timerButton title cssClass command =
+    button
+        [ class <| "btn h6 " ++ cssClass
+        , onClick <| command
+        ]
+        [ text title ]
+
+
 view : Model -> Html Msg
 view model =
     let
@@ -140,37 +149,22 @@ view model =
                 "bg-white black"
             else
                 "bg-black white"
+
+        startStopButtonText =
+            if model.countdownRunning && not model.atZero then
+                "Stop"
+            else
+                "Start"
     in
         div [ class <| " " ++ mainCssClass ]
             [ div []
                 [ h1 [ class "center" ] [ text elapsedTime ]
                 ]
             , div [ class "" ]
-                [ button
-                    [ class <| "btn h6 " ++ buttonCssClass
-                    , onClick <| IncreaseSeconds -30
-                    ]
-                    [ text "-30 sec" ]
-                , button
-                    [ class <| "btn h6 " ++ buttonCssClass
-                    , onClick <| IncreaseSeconds 30
-                    ]
-                    [ text "+30 sec" ]
-                , button
-                    [ class <| "btn h6 " ++ buttonCssClass
-                    , onClick <| ResetTimer
-                    ]
-                    [ text "Reset" ]
-                , button
-                    [ class <| "btn h6 " ++ buttonCssClass
-                    , onClick <| ToggleTimer
-                    ]
-                    [ text <|
-                        if model.countdownRunning && not model.atZero then
-                            "Stop"
-                        else
-                            "Start"
-                    ]
+                [ timerButton "-30 s" buttonCssClass (IncreaseSeconds -30)
+                , timerButton "+30 s" buttonCssClass (IncreaseSeconds 30)
+                , timerButton "Reset" buttonCssClass ResetTimer
+                , timerButton startStopButtonText buttonCssClass ToggleTimer
                 ]
             ]
 

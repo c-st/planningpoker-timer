@@ -11,7 +11,7 @@ module.exports = {
       path.resolve('./src/index.js')
   ],
   output: {
-    path: path.resolve(__dirname + '/dist'),
+    path: 'dist',
     filename: '[name].js',
   },
   module: {
@@ -26,7 +26,7 @@ module.exports = {
       {
         test:    /\.elm$/,
         exclude: [/elm-stuff/, /node_modules/],
-        loader:  'elm-webpack?pathToMake=node_modules/.bin/elm-make',
+        loader:  'elm-webpack?pathToMake=/usr/local/bin/elm-make',
       },
       {
         test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,

@@ -1,18 +1,28 @@
-FROM smebberson/alpine-nginx-nodejs:latest
+FROM node:6-slim
 
-EXPOSE 80
+# setup nginx
+RUN \
+	apt-get update && \
+  apt-get install -y nginx && \
+  echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
+  chown -R www-data:www-data /var/lib/nginx
 
-# build frontend
+# setup elm
+RUN npm install -g elm
 
+# build assets
 WORKDIR /usr/src/app
-
 COPY package.json /usr/src/app
 RUN npm --quiet install
 
 COPY . /usr/src/app
-RUN node ./scripts/build.js
 
-# copy artifacts to nginx
+RUN npm run build
 
-COPY dist /usr/share/nginx/html
+# copy to nginx
+RUN cp -R /usr/src/app/dist/* /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN ln -sf /etc/nginx/conf.d/default.conf /etc/nginx/sites-enabled/default
+
+CMD ["nginx"]
+EXPOSE 80

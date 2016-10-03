@@ -25,6 +25,6 @@ run_on_docker:
   script:
     - docker stop timer || true
     - docker rm timer || true
-    - docker run -d --name=timer -e VIRTUAL_HOST='timer.planningpoker.cc' registry.stangier.io/planningpoker/timer:latest run
+    - docker run -d --name=timer -e VIRTUAL_HOST='timer.planningpoker.cc' registry.stangier.io/planningpoker/timer:latest
   only:
     - master

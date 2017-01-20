@@ -8,7 +8,7 @@ RUN \
   chown -R www-data:www-data /var/lib/nginx
 
 # setup elm
-RUN npm install -g elm
+RUN npm install -g elm@0.18.0
 
 # build assets
 WORKDIR /usr/src/app

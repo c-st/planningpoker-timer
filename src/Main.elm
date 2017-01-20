@@ -1,7 +1,6 @@
 module Main exposing (..)
 
-import Html.App as App
-import Time exposing (Time, second, inSeconds, inMinutes)
+import Time exposing (Time, second)
 import Platform.Sub exposing (none)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -173,9 +172,9 @@ view model =
 -- main
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    Html.program
         { init = init
         , update = update
         , subscriptions = subscriptions

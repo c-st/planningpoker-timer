@@ -29,10 +29,7 @@ module.exports = {
     publicPath: '/'
   },
   resolveLoader: {
-
-    // Look for loaders in own node_modules
-    root: paths.ownModules,
-    moduleTemplates: [ '*-loader' ]
+    root: paths.ownModules
   },
   resolve: {
     modulesDirectories: [ 'node_modules' ],

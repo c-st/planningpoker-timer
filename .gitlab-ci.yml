@@ -26,6 +26,6 @@ run_on_docker:
   script:
     - docker stop timer || true
     - docker rm timer || true
-    - docker run -d --name=timer -e VIRTUAL_HOST='timer.planningpoker.cc' --label=traefik.backend=planningpoker-timer --label=traefik.frontend.rule=Host:timer.planningpoker.cc --label=traefik.enable=true --label=traefik.port=3000 registry.stangier.io/planningpoker/timer:${CI_PIPELINE_ID}
+    - docker run -d --name=timer -e VIRTUAL_HOST='timer.planningpoker.cc' --label=traefik.backend=planningpoker-timer --label=traefik.frontend.rule=Host:timer.planningpoker.cc --label=traefik.enable=true --label=traefik.port=80 registry.stangier.io/planningpoker/timer:${CI_PIPELINE_ID}
   only:
     - master

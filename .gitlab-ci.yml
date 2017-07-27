@@ -6,17 +6,18 @@ stages:
 
 before_script:
   - docker info
+  - echo "Running pipeline for $CI_PIPELINE_ID"
 
 build_image:
   stage: build
   script:
-    - docker build -t timer ./
-    - docker tag -f timer registry.stangier.io/planningpoker/timer:latest
+    - docker build -t timer:${CI_PIPELINE_ID} ./
+    - docker tag timer:${CI_PIPELINE_ID} registry.stangier.io/planningpoker/timer:${CI_PIPELINE_ID}
 
 publish_to_registry:
   stage: publish
   script:
-    - docker push registry.stangier.io/planningpoker/timer:latest
+    - docker push registry.stangier.io/planningpoker/timer:${CI_PIPELINE_ID}
   only:
     - master
 
@@ -25,6 +26,6 @@ run_on_docker:
   script:
     - docker stop timer || true
     - docker rm timer || true
-    - docker run -d --name=timer -e VIRTUAL_HOST='timer.planningpoker.cc' registry.stangier.io/planningpoker/timer:latest
+    - docker run -d --name=timer -e VIRTUAL_HOST='timer.planningpoker.cc' --label=traefik.backend=planningpoker-timer --label=traefik.frontend.rule=Host:timer.planningpoker.cc --label=traefik.enable=true --label=traefik.port=3000 registry.stangier.io/planningpoker/timer:${CI_PIPELINE_ID}
   only:
     - master
